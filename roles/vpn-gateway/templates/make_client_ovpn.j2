@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Generates client.ovpn file contents to stdout, with embedded certificates
+#
+if [  $# -lt 1 ]; then
+  echo "Use ./make_client_ovpn <client-id> to generate .ovpn file with embedded certs to stdout"
+  exit 1
+fi
+
+CLIENT=$1
+
+CLIENT_KEY_FILE="pki/private/$CLIENT.key"
+if [ ! -f ${CLIENT_KEY_FILE} ]; then
+  echo "No key found, generating..."
+  ./easyrsa --batch --req-cn=${CLIENT} gen-req ${CLIENT} client nopass
+fi
+
+CLIENT_CERT_FILE="pki/issued/${CLIENT}.crt"
+if [ ! -f ${CLIENT_CERT_FILE} ]; then
+  echo "No cert found, signing..."
+ ./easyrsa --batch sign-req client ${CLIENT}
+fi
+
+cat client.ovpn
+
+echo '<key>'
+cat ${CLIENT_KEY_FILE}
+echo '</key>'
+
+echo '<cert>'
+cat ${CLIENT_CERT_FILE}
+echo '</cert>'
+
+echo '<ca>'
+cat pki/ca.crt
+echo '</ca>'
+
+echo '<tls-auth>'
+cat {{ openvpn_hmac_firewall }}
+echo '</tls-auth>'

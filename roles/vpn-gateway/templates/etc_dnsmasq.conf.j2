@@ -1,0 +1,11 @@
+user=dns
+group=dns
+
+bogus-priv
+no-resolv
+
+{% for item in upstream_dns_servers %}
+server={{ item }}
+{% endfor %}
+
+listen-address=127.0.0.1,{{ openvpn_gateway }}

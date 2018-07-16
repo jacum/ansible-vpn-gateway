@@ -1,0 +1,37 @@
+# {{ ansible_managed }}
+
+user openvpn
+group openvpn
+
+port {{ openvpn_port }}
+proto {{ openvpn_protocol }}
+dev tun
+
+server {{ openvpn_gateway_network }}
+topology subnet
+{% for item in openvpn_internal_networks %}
+push "route {{ item }}"
+{% endfor %}
+push "dhcp-option DNS {{ openvpn_gateway }}"
+
+comp-lzo adaptive
+persist-key
+persist-tun
+keepalive 10 120
+
+# Crypto settings
+tls-server
+ca {{ openvpn_server_path }}/ca.crt
+cert {{ openvpn_server_path }}/server.crt
+key {{ openvpn_server_path }}/server.key
+dh {{ openvpn_dhparam }}
+
+cipher {{ openvpn_cipher }}
+auth {{ openvpn_auth_digest }}
+tls-version-min 1.2
+tls-cipher {{ openvpn_tls_cipher }}
+tls-auth {{ openvpn_hmac_firewall }} 0 # This file is secret
+remote-cert-eku "TLS Web Client Authentication"
+
+log-append {{ openvpn_log_path}}/openvpn.log
+verb {{ openvpn_log_verbosity }}

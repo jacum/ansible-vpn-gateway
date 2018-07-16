@@ -1,0 +1,64 @@
+---
+- name: Set default interface to public
+  firewalld:
+    interface: "{{ansible_default_ipv4.interface}}"
+    zone: public
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: Enable openvpn service in public
+  firewalld:
+    zone: public
+    service: openvpn
+    state: enabled
+    permanent: true
+
+- name: Enable openvpn port in public
+  firewalld:
+    zone: public
+    port: "{{ openvpn_port }}/{{ openvpn_protocol }}"
+    state: enabled
+    permanent: true
+
+- name: Set tun0 interface to internal
+  firewalld:
+    interface: tun0
+    zone: internal
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: Enable services in internal
+  firewalld:
+    service: "{{ item }}"
+    zone: internal
+    permanent: true
+    immediate: true
+    state: enabled
+  with_items:
+    - ssh
+    - dns
+
+- name: Enable ports in internal zone
+  firewalld:
+    port: "{{ item }}"
+    zone: internal
+    permanent: true
+    immediate: true
+    state: enabled
+  with_items:
+    - 53/tcp
+    - 53/udp
+    - 22/tcp
+
+- firewalld:
+    zone: internal
+    masquerade: yes
+    state: enabled
+    permanent: true
+
+- name: Bounce firewalld
+  service:
+    name: firewalld
+    state: restarted

@@ -1,0 +1,59 @@
+---
+- name: Users | Create openvpn group
+  group:
+    name: openvpn
+
+- name: Users | Create openvpn user
+  user:
+    name: openvpn
+    group: openvpn
+    shell: /usr/sbin/nologin
+    home: /var/lib/openvpn
+
+- name: Config directory, set the proper permissions {{ openvpn_path }}
+  file:
+    path: "{{ openvpn_path }}"
+    recurse: no
+    state: directory
+    owner: root
+    group: openvpn
+    mode: 0750
+
+- name: Log directory, set the proper permissions  {{ openvpn_log_path }}
+  file:
+    path: "{{ openvpn_log_path }}"
+    recurse: no
+    state: directory
+    owner: openvpn
+    group: openvpn
+    mode: 0750
+
+- name: Check if DH pair exists
+  stat:
+    path: "{{ openvpn_dhparam }}"
+  register: dh_pair
+
+- name: Generate DH pair
+  shell: "openssl gendh -out {{ openvpn_dhparam }}"
+  when: dh_pair.stat.exists == False
+
+- name: Check if TLS auth key exists
+  stat:
+    path: "{{ openvpn_hmac_firewall }}"
+  register: ta_key
+
+- name: Generate TLS auth key
+  shell: "openvpn --genkey --secret {{ openvpn_hmac_firewall }}"
+  when: ta_key.stat.exists == False
+
+- name: Copy OpenVPN server configuration files into place
+  template:
+    src: server.conf.j2
+    dest: "{{ openvpn_path }}/server.conf"
+  notify:
+    - Restart openvpn
+
+- name: Copy OpenVPN client template configuration file into place
+  template:
+    src: client.ovpn.j2
+    dest: "{{ openvpn_ca_path }}/client.ovpn"

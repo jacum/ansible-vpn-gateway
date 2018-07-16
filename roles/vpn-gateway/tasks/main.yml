@@ -1,0 +1,8 @@
+---
+- include: install-packages.yml
+- include: configure-easyrsa.yml
+- include: security.yml
+- include: configure-openvpn.yml
+- include: configure-systemd.yml
+- include: configure-firewalld.yml
+- include: configure-dnsmasq.yml

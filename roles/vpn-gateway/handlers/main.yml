@@ -1,0 +1,12 @@
+---
+- name: Restart openvpn
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: openvpn
+
+- name: start dnsmasq
+  service:
+    name: dnsmasq
+    state: restarted
+

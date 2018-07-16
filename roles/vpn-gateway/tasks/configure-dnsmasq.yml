@@ -1,0 +1,25 @@
+---
+- name: Create dns group
+  group:
+    name: dns
+
+- name: Create user
+  user:
+    name: dns
+    group: dns
+    shell: /usr/sbin/nologin
+    createhome: no
+
+- name: Generate dnsmasq configuration file
+  template:
+    src: etc_dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+  notify:
+    - start dnsmasq
+
+- name: systemd - enable service
+  service:
+    name: dnsmasq
+    enabled: true
+  notify:
+    - start dnsmasq

@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+set_var EASYRSA_PKI		"{{ openvpn_ca_pki_path }}"
+
+set_var EASYRSA_REQ_COUNTRY	"{{ openvpn_key_country }}"
+set_var EASYRSA_REQ_PROVINCE	"{{ openvpn_key_province }}"
+set_var EASYRSA_REQ_CITY	"{{ openvpn_key_city }}"
+set_var EASYRSA_REQ_ORG	"{{ openvpn_key_org }}"
+set_var EASYRSA_REQ_EMAIL	"{{ openvpn_key_email }}"
+set_var EASYRSA_REQ_OU		"{{ openvpn_key_ou }}"
+
+set_var EASYRSA_KEY_SIZE	{{ openvpn_key_size }}
+set_var EASYRSA_ALGO		rsa
+
+set_var EASYRSA_CA_EXPIRE	{{ openvpn_key_days_valid }}
+set_var EASYRSA_CERT_EXPIRE	{{ openvpn_key_days_valid }}
+set_var EASYRSA_CRL_DAYS	{{ openvpn_key_days_valid }}
+
+set_var EASYRSA_SSL_CONF	"{{ openvpn_ca_path }}/openssl-easyrsa.cnf"
+set_var EASYRSA_REQ_CN		"{{ openssl_key_request_subject }}"
+set_var EASYRSA_DIGEST		"sha256"

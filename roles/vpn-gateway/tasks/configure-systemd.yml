@@ -1,0 +1,15 @@
+---
+- name: Copy service unit config file
+  template:
+    src: openvpn.service.j2
+    dest: /etc/systemd/system/openvpn.service
+  notify:
+    - Restart openvpn
+
+- name: Enable openvpn service
+  service:
+    name: openvpn
+    enabled: true
+  notify:
+    - Restart openvpn
+

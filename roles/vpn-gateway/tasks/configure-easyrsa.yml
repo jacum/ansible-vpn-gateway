@@ -1,0 +1,127 @@
+---
+- name: Create CA path
+  file:
+    path: "{{ openvpn_ca_path }}"
+    recurse: no
+    state: directory
+    owner: root
+    group: openvpn
+    mode: 0750
+
+- name: Copy vars configuration file
+  template:
+    src: vars.j2
+    dest: "{{ openvpn_ca_path }}/vars"
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Install easyrsa script
+  copy:
+    src: easyrsa
+    dest: "{{ openvpn_ca_path }}/easyrsa"
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Copy client configuration script
+  template:
+    src: make_client_ovpn.j2
+    dest: "{{ openvpn_ca_path }}/make_client_ovpn"
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Copy openssl configuration file
+  template:
+    src: openssl-easyrsa.cnf.j2
+    dest: "{{ openvpn_ca_path }}/openssl-easyrsa.cnf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Check types dir
+  stat:
+    path: "{{ openvpn_ca_path }}/x509-types"
+  register: types
+
+- block:
+  - file:
+      path: "{{ openvpn_ca_path }}/x509-types"
+      state: directory
+      owner: root
+      group: root
+      mode: 0700
+
+  - copy:
+      src: "{{ item }}"
+      dest: "{{ openvpn_ca_path }}/x509-types"
+    with_items:
+      - x509-types/ca
+      - x509-types/client
+      - x509-types/server
+      - x509-types/COMMON
+  when: not types.stat.exists
+
+- name: Check PKI
+  stat:
+    path: "{{ openvpn_ca_pki_path }}/private"
+  register: pki
+
+- block:
+  - name: "Initialize PKI"
+    command: ./easyrsa init-pki
+    args:
+      chdir: "{{ openvpn_ca_path }}"
+      creates: "{{ openvpn_ca_pki_path }}"
+
+  - name: "Build CA keys"
+    command: ./easyrsa --batch build-ca nopass
+    args:
+      chdir: "{{ openvpn_ca_path }}"
+      creates: "{{ openvpn_ca_pki_path }}/private/ca.key"
+
+  - name: "Generate the server certificate/key"
+    command: "./easyrsa --batch --req-cn={{ openvpn_server }} gen-req server nopass"
+    args:
+      chdir: "{{ openvpn_ca_path }}"
+      creates: "{{ openvpn_ca_pki_path }}/private/server.key"
+
+  - name: "Get the new CA to sign our server key"
+    command: ./easyrsa --batch sign-req server server
+    args:
+      chdir: "{{ openvpn_ca_path }}"
+      creates: "{{ openvpn_ca_pki_path }}/issued/server.crt"
+
+  - name: "Create server path {{ openvpn_server_path }}"
+    file:
+      path: "{{ openvpn_server_path }}"
+      recurse: no
+      state: directory
+      owner: root
+      group: openvpn
+      mode: 0750
+
+  - name: Copy server key and CA cert
+    command: "cp -f {{ openvpn_ca_pki_path }}/{{ item }} {{ openvpn_server_path }}"
+    with_items:
+      - "private/server.key"
+      - "issued/server.crt"
+      - "ca.crt"
+
+  - name: Permissions on server CA, key and cert
+    file:
+      path: "{{ openvpn_server_path }}/{{ item }}"
+      recurse: no
+      owner: root
+      group: openvpn
+      mode: 0600
+    with_items:
+      - "server.key"
+      - "server.crt"
+      - "ca.crt"
+  when: not pki.stat.exists
+
+
+
+
