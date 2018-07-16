@@ -11,6 +11,7 @@
   service:
     name: iptables
     enabled: false
+  ignore_errors: true
 
 - name: Copy service unit config file
   template:
