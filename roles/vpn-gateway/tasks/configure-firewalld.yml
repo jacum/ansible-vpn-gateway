@@ -57,7 +57,7 @@
     - 53/udp
     - 22/tcp
 
-- name: Enable masquerate
+- name: Enable masquerade
   firewalld:
     zone: "{{ item }}"
     masquerade: yes
