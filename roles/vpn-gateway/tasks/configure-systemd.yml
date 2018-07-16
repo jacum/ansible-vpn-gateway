@@ -1,4 +1,17 @@
 ---
+- name: Enable services
+  service:
+    name: "{{item}}"
+    enabled: false
+  with_items:
+    - dnsmasq
+    - firewalld
+
+- name: Disable iptables service
+  service:
+    name: openvpn
+    enabled: false
+
 - name: Copy service unit config file
   template:
     src: openvpn.service.j2
@@ -10,6 +23,3 @@
   service:
     name: openvpn
     enabled: true
-  notify:
-    - Restart openvpn
-

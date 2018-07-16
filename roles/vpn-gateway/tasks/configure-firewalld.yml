@@ -21,18 +21,18 @@
     state: enabled
     permanent: true
 
-- name: Set tun0 interface to internal
+- name: Set tun0 to trusted
   firewalld:
     interface: tun0
-    zone: internal
+    zone: trusted
     permanent: true
     immediate: true
     state: enabled
 
-- name: Enable services in internal
+- name: Enable services in trusted
   firewalld:
     service: "{{ item }}"
-    zone: internal
+    zone: trusted
     permanent: true
     immediate: true
     state: enabled
@@ -40,10 +40,10 @@
     - ssh
     - dns
 
-- name: Enable ports in internal zone
+- name: Enable ports in trusted zone
   firewalld:
     port: "{{ item }}"
-    zone: internal
+    zone: trusted
     permanent: true
     immediate: true
     state: enabled
@@ -52,11 +52,15 @@
     - 53/udp
     - 22/tcp
 
-- firewalld:
-    zone: internal
+- name: Enable masquerate
+  firewalld:
+    zone: "{{ item }}"
     masquerade: yes
     state: enabled
     permanent: true
+  with_items:
+    - trusted
+    - public
 
 - name: Bounce firewalld
   service:

@@ -16,10 +16,3 @@
     dest: /etc/dnsmasq.conf
   notify:
     - start dnsmasq
-
-- name: systemd - enable service
-  service:
-    name: dnsmasq
-    enabled: true
-  notify:
-    - start dnsmasq

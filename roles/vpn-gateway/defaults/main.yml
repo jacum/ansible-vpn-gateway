@@ -5,7 +5,6 @@ unwanted_packages:
   - libbind9-140
   - at
   - lxcfs
-  - rpcbind
   - nfs-common
 
 required_packages:
