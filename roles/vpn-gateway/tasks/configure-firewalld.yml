@@ -1,4 +1,9 @@
 ---
+- name: Ensure firewalld is started
+  service:
+    name: firewalld
+    state: started
+
 - name: Set default interface to public
   firewalld:
     interface: "{{ansible_default_ipv4.interface}}"
