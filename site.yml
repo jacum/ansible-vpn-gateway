@@ -4,4 +4,4 @@
    become: True
    gather_facts: True
    roles:
-       - openvpn-server
+     - vpn-gateway
