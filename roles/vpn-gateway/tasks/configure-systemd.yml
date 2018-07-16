@@ -9,7 +9,7 @@
 
 - name: Disable iptables service
   service:
-    name: openvpn
+    name: iptables
     enabled: false
 
 - name: Copy service unit config file
