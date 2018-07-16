@@ -1,5 +1,5 @@
 # ansible-vpn-gateway
-Minimalistic hardened and handy self-contained provisioning of a VPN gateway, with client certificate management and a DNS proxy.
+Minimalistic hardened and convenient self-contained provisioning of a VPN gateway, with client certificate management and a DNS proxy for CentOS.
 
 Roles:
  - `vpn-gateway` installs gateway host on a gateway VM
@@ -20,7 +20,8 @@ firewall-cmd --zone=public --add-forward-port=port=1194:proto=tcp:toport=1194:to
 ## Security setup
 - Self-managed CA, co-located at gateway
 - Client certificates managed by EasyRSA (integrated into this role, no git pulls etc) 
-- TLS auth for additional security
+- Safe ciphers by default
+- HMAC firewall for additional security
 
 ## Making client access profiles (.ovpn)
 ```
