@@ -20,7 +20,7 @@ if [ ! -f ${CLIENT_CERT_FILE} ]; then
   echo "No cert found, signing..."
  ./easyrsa --batch sign-req client ${CLIENT}
 fi
-
+echo "---------------- cut from here"
 cat client.ovpn
 
 echo '<key>'
@@ -38,3 +38,4 @@ echo '</ca>'
 echo '<tls-auth>'
 cat {{ openvpn_hmac_firewall }}
 echo '</tls-auth>'
+echo "---------------- cut to here"
