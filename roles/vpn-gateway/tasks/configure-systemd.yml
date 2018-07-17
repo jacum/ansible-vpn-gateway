@@ -7,11 +7,13 @@
     - dnsmasq
     - firewalld
 
-- name: Disable iptables service
+- name: Disable iptables
   service:
     name: iptables
-    enabled: false
-  ignore_errors: true
+    state: stopped
+    enabled: no
+  register: result
+  failed_when: "result is failed and not 'Could not find the requested service'
 
 - name: Copy service unit config file
   template:

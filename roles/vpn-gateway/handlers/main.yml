@@ -5,8 +5,12 @@
     daemon_reload: yes
     name: openvpn
 
-- name: start dnsmasq
+- name: Restart dnsmasq
   service:
     name: dnsmasq
     state: restarted
 
+- name: Restart firewalld
+  service:
+    name: firewalld
+    state: restarted
