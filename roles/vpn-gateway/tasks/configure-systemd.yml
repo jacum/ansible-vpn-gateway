@@ -26,3 +26,5 @@
   service:
     name: openvpn
     enabled: true
+  notify:
+    - Restart openvpn
