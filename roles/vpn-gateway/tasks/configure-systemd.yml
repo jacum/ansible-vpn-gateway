@@ -13,7 +13,7 @@
     state: stopped
     enabled: no
   register: result
-  failed_when: "result is failed and not 'Could not find the requested service'
+  failed_when: "result is failed and not 'Could not find the requested service'"
 
 - name: Copy service unit config file
   template:
