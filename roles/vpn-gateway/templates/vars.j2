@@ -16,6 +16,6 @@ set_var EASYRSA_CA_EXPIRE	{{ openvpn_key_days_valid }}
 set_var EASYRSA_CERT_EXPIRE	{{ openvpn_key_days_valid }}
 set_var EASYRSA_CRL_DAYS	{{ openvpn_key_days_valid }}
 
-set_var EASYRSA_SSL_CONF	"{{ easyrsa_path }}/openssl-easyrsa.cnf"
+set_var EASYRSA_SSL_CONF	"{{ easyrsa_path }}/openssl-1.0.cnf"
 set_var EASYRSA_REQ_CN		"{{ openssl_key_request_subject }}"
 set_var EASYRSA_DIGEST		"sha256"
