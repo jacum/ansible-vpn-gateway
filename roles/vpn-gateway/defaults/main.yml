@@ -13,6 +13,7 @@ required_packages:
   - openssl
   - openvpn
   - dnsmasq
+  - easy-rsa
 
 openvpn_path: "/etc/openvpn"
 openvpn_dhparam: "{{ openvpn_path }}/dh{{ openvpn_key_size }}.pem"
@@ -23,8 +24,9 @@ openvpn_cipher: "AES-256-CBC"
 openvpn_auth_digest: "SHA256"
 openvpn_tls_cipher: "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-DSS-WITH-AES-256-CBC-SHA256"
 
-openvpn_ca_path: "{{ openvpn_path }}/ca"
-openvpn_ca_pki_path: "{{ openvpn_ca_path }}/pki"
+easyrsa_path: "/usr/share/easy-rsa/3"
+openvpn_ca_path: "{{ easyrsa_path }}/pki/ca"
+openvpn_ca_pki_path: "{{ easyrsa_path }}/pki/"
 
 upstream_dns_servers:
   - 8.8.8.8

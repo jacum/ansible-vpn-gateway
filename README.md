@@ -19,7 +19,7 @@ firewall-cmd --zone=public --add-forward-port=port=1194:proto=tcp:toport=1194:to
 
 ## Security setup
 - Self-managed CA, co-located at gateway
-- Client certificates managed by EasyRSA (integrated into this role, no git pulls etc) 
+- Client certificates managed by EasyRSA 
 - Safe ciphers by default
 - HMAC firewall for additional security
 

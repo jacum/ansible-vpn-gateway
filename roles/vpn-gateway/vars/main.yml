@@ -1,3 +1,4 @@
+# Change 
 openvpn_server: "hetzner02.jacum.com"
 openvpn_port: 1194
 openvpn_protocol: tcp

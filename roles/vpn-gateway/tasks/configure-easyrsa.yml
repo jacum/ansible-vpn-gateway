@@ -16,14 +16,6 @@
     group: root
     mode: 0640
 
-- name: Install easyrsa script
-  copy:
-    src: easyrsa
-    dest: "{{ openvpn_ca_path }}/easyrsa"
-    owner: root
-    group: root
-    mode: 0700
-
 - name: Copy client configuration script
   template:
     src: make_client_ovpn.j2
@@ -31,37 +23,6 @@
     owner: root
     group: root
     mode: 0700
-
-- name: Copy openssl configuration file
-  template:
-    src: openssl-easyrsa.cnf.j2
-    dest: "{{ openvpn_ca_path }}/openssl-easyrsa.cnf"
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Check types dir
-  stat:
-    path: "{{ openvpn_ca_path }}/x509-types"
-  register: types
-
-- block:
-  - file:
-      path: "{{ openvpn_ca_path }}/x509-types"
-      state: directory
-      owner: root
-      group: root
-      mode: 0700
-
-  - copy:
-      src: "{{ item }}"
-      dest: "{{ openvpn_ca_path }}/x509-types"
-    with_items:
-      - x509-types/ca
-      - x509-types/client
-      - x509-types/server
-      - x509-types/COMMON
-  when: not types.stat.exists
 
 - name: Check PKI
   stat:
