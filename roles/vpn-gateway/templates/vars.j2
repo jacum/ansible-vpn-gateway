@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-set_var EASYRSA_PKI		"{{ openvpn_ca_pki_path }}"
+set_var EASYRSA_PKI		"{{ openvpn_pki_path }}"
 
 set_var EASYRSA_REQ_COUNTRY	"{{ openvpn_key_country }}"
 set_var EASYRSA_REQ_PROVINCE	"{{ openvpn_key_province }}"
