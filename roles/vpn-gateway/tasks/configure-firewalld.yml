@@ -1,4 +1,9 @@
 ---
+- name: Enable IPv4 traffic forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+
 - name: Ensure firewalld is started
   service:
     name: firewalld
