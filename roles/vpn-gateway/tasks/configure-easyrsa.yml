@@ -1,17 +1,17 @@
 ---
-- name: Create CA path
+- name: Ensure EasyRSA path is not available for users other than root
   file:
-    path: "{{ openvpn_ca_path }}"
+    path: "{{ easyrsa_path }}"
     recurse: no
     state: directory
     owner: root
-    group: openvpn
+    group: root
     mode: 0750
 
 - name: Copy vars configuration file
   template:
     src: vars.j2
-    dest: "{{ openvpn_ca_path }}/vars"
+    dest: "{{ easyrsa_path }}/vars"
     owner: root
     group: root
     mode: 0640
@@ -19,40 +19,40 @@
 - name: Copy client configuration script
   template:
     src: make_client_ovpn.j2
-    dest: "{{ openvpn_ca_path }}/make_client_ovpn"
+    dest: "{{ easyrsa_path }}/make_client_ovpn"
     owner: root
     group: root
     mode: 0700
 
 - name: Check PKI
   stat:
-    path: "{{ openvpn_ca_pki_path }}/private"
+    path: "{{ openvpn_pki_path }}"
   register: pki
 
 - block:
   - name: "Initialize PKI"
     command: ./easyrsa init-pki
     args:
-      chdir: "{{ openvpn_ca_path }}"
-      creates: "{{ openvpn_ca_pki_path }}"
+      chdir: "{{ easyrsa_path }}"
+      creates: "{{ openvpn_pki_path }}"
 
   - name: "Build CA keys"
     command: ./easyrsa --batch build-ca nopass
     args:
-      chdir: "{{ openvpn_ca_path }}"
-      creates: "{{ openvpn_ca_pki_path }}/private/ca.key"
+      chdir: "{{ easyrsa_path }}"
+      creates: "{{ openvpn_pki_path }}/private/ca.key"
 
   - name: "Generate the server certificate/key"
     command: "./easyrsa --batch --req-cn={{ openvpn_server }} gen-req server nopass"
     args:
-      chdir: "{{ openvpn_ca_path }}"
-      creates: "{{ openvpn_ca_pki_path }}/private/server.key"
+      chdir: "{{ easyrsa_path }}"
+      creates: "{{ openvpn_pki_path }}/private/server.key"
 
   - name: "Get the new CA to sign our server key"
     command: ./easyrsa --batch sign-req server server
     args:
-      chdir: "{{ openvpn_ca_path }}"
-      creates: "{{ openvpn_ca_pki_path }}/issued/server.crt"
+      chdir: "{{ easyrsa_path }}"
+      creates: "{{ openvpn_pki_path }}/issued/server.crt"
 
   - name: "Create server path {{ openvpn_server_path }}"
     file:
@@ -64,7 +64,7 @@
       mode: 0750
 
   - name: Copy server key and CA cert
-    command: "cp -f {{ openvpn_ca_pki_path }}/{{ item }} {{ openvpn_server_path }}"
+    command: "cp -f {{ openvpn_pki_path }}/{{ item }} {{ openvpn_server_path }}"
     with_items:
       - "private/server.key"
       - "issued/server.crt"

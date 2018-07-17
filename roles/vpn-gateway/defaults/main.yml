@@ -25,8 +25,7 @@ openvpn_auth_digest: "SHA256"
 openvpn_tls_cipher: "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-DSS-WITH-AES-256-CBC-SHA256"
 
 easyrsa_path: "/usr/share/easy-rsa/3"
-openvpn_ca_path: "{{ easyrsa_path }}/pki/ca"
-openvpn_ca_pki_path: "{{ easyrsa_path }}/pki/"
+openvpn_pki_path: "{{ easyrsa_path }}/pki"
 
 upstream_dns_servers:
   - 8.8.8.8

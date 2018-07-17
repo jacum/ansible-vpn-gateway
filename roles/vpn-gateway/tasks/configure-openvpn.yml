@@ -56,4 +56,4 @@
 - name: Copy OpenVPN client template configuration file into place
   template:
     src: client.ovpn.j2
-    dest: "{{ openvpn_ca_path }}/client.ovpn"
+    dest: "{{ easyrsa_path }}/client.ovpn"
