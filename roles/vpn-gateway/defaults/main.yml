@@ -23,10 +23,14 @@ openvpn_log_path: "/var/log/openvpn"
 openvpn_cipher: "AES-256-CBC"
 openvpn_auth_digest: "SHA256"
 openvpn_tls_cipher: "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-DSS-WITH-AES-256-CBC-SHA256"
-
+ncp_ciphers: "AES-256-GCM:AES-128-GCM:AES-256-CBC:AES-128-CBC:BF-CBC"
 easyrsa_path: "/usr/share/easy-rsa/3"
 openvpn_pki_path: "{{ easyrsa_path }}/pki"
+
+# todo optional dnsmasq by variable
+dns_server: "{{ openvpn_gateway }}"
 
 upstream_dns_servers:
   - 8.8.8.8
   - 8.8.4.4
+

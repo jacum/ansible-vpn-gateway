@@ -13,7 +13,8 @@ firewall-cmd --zone=public --add-forward-port=port=1194:proto=tcp:toport=1194:to
 ## Assumptions and design
 - Centos 7.5+ 
 - OpenVPN as foundation
-- Systemd service management (one service, not a template)
+- UDP for less overhead (encapsulated protocol is TCP most of the time, anyway)
+- Systemd service management (one service, not a template, for simplicity)
 - Firewalld instead of iptables
 - DNS proxy (dnsmasq) to provide host names from internal networks (from /etc/hosts or internal DNS)
 

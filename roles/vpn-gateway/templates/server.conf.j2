@@ -12,7 +12,7 @@ topology subnet
 {% for item in openvpn_internal_networks %}
 push "route {{ item }}"
 {% endfor %}
-push "dhcp-option DNS {{ openvpn_gateway }}"
+push "dhcp-option DNS {{ dns_server }}"
 
 comp-lzo adaptive
 persist-key
@@ -31,7 +31,12 @@ auth {{ openvpn_auth_digest }}
 tls-version-min 1.2
 tls-cipher {{ openvpn_tls_cipher }}
 tls-auth {{ openvpn_hmac_firewall }} 0 # This file is secret
+ncp-ciphers {{ ncp-ciphers }}
 remote-cert-eku "TLS Web Client Authentication"
 
 log-append {{ openvpn_log_path}}/openvpn.log
 verb {{ openvpn_log_verbosity }}
+status {{ openvpn_log_path}}/status.log
+status-version 2
+suppress-timestamps
+

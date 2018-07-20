@@ -1,21 +1,25 @@
 tls-client
 up-restart
-server-poll-timeout 4
-setenv FORWARD_COMPATIBLE 1
-remote {{ openvpn_server }} 1194
-topology subnet
-pull
-proto {{ openvpn_protocol }}
+
 dev tun
 dev-type tun
+remote {{ openvpn_server }} 1194
+proto {{ openvpn_protocol }}
+
 nobind
+topology subnet
+pull
+server-poll-timeout 4
+
+setenv FORWARD_COMPATIBLE 1
 cipher {{ openvpn_cipher }}
 auth {{ openvpn_auth_digest }}
+remote-cert-eku "TLS Web Server Authentication"
+
 persist-key
 persist-tun
-nobind
 comp-lzo adaptive
+
 verb {{ openvpn_log_verbosity }}
 key-direction 1
-
 

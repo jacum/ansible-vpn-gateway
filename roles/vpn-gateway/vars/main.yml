@@ -1,7 +1,7 @@
 # Change 
 openvpn_server: "hetzner02.jacum.com"
 openvpn_port: 1194
-openvpn_protocol: tcp
+openvpn_protocol: udp
 
 openvpn_key_country: "NL"
 openvpn_key_city: "Utrecht"

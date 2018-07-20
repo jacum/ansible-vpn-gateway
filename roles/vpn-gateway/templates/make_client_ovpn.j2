@@ -2,7 +2,7 @@
 #
 # Generates client.ovpn file contents to stdout, with embedded certificates
 #
-if [  $# -lt 1 ]; then
+if [ $# -lt 1 ]; then
   echo "Use ./make_client_ovpn <client-id> to generate .ovpn file with embedded certs to stdout"
   exit 1
 fi
