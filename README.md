@@ -1,14 +1,11 @@
 # ansible-vpn-gateway
 Minimalistic hardened and convenient self-contained provisioning of a VPN gateway, with client certificate management and a DNS proxy for CentOS.
 
-Roles:
- - `vpn-gateway` installs gateway host on a gateway VM
-
 On the physical host, execute the following line to enable port forwarding to the gateway VM
 ```
-firewall-cmd --zone=public --add-forward-port=port=1194:proto=tcp:toport=1194:toaddr=<gateway VM IP>
+firewall-cmd --zone=public --add-forward-port=port=1194:proto=udp:toport=1194:toaddr=<gateway VM IP>
 ```
-(when using default port/protocol values)
+(assuming default host and port) 
 
 ## Assumptions and design
 - Centos 7.5+ 
