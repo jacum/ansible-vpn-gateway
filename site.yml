@@ -1,6 +1,0 @@
-#!/usr/bin/env ansible-playbook
- - hosts: vpn-gateway
-   become: True
-   gather_facts: True
-   roles:
-     - vpn-gateway
