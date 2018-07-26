@@ -31,7 +31,7 @@ auth {{ openvpn_auth_digest }}
 tls-version-min 1.2
 tls-cipher {{ openvpn_tls_cipher }}
 tls-auth {{ openvpn_hmac_firewall }} 0 # This file is secret
-ncp-ciphers {{ ncp-ciphers }}
+ncp-ciphers {{ ncp_ciphers }}
 remote-cert-eku "TLS Web Client Authentication"
 
 log-append {{ openvpn_log_path}}/openvpn.log
