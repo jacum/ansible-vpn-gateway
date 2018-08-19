@@ -1,4 +1,10 @@
 ---
+- name: Install EPEL
+  yum:
+    name: epel-release
+    state: latest
+    update_cache: yes
+
 - name: Remove non-required packages
   package:
     name: "{{ item }}"

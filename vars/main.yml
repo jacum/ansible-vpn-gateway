@@ -1,20 +1,20 @@
 # Change 
-openvpn_server: "hetzner02.jacum.com"
-openvpn_port: 1194
-openvpn_protocol: udp
+openvpn_server: "{{ public_physical_host_name }}"
+openvpn_port: "{{ vpn_port }}"
+openvpn_protocol: "{{ vpn_protocol }}"
 
 openvpn_key_country: "NL"
-openvpn_key_city: "Utrecht"
-openvpn_key_province: "Utrecht"
-openvpn_key_org: "DHL"
-openvpn_key_ou: "Azure access"
-openvpn_key_email: "platform@dhlparcel.nl"
+openvpn_key_city: "Amsterdam"
+openvpn_key_province: "Noord-Holland"
+openvpn_key_org: "PragmaSoft"
+openvpn_key_ou: "cloud ops"
+openvpn_key_email: "certificates@pragmasoft.nl"
 openvpn_key_days_valid: "365"
 openssl_key_request_subject: "/C={{ openvpn_key_country }}/ST={{ openvpn_key_province }}/L={{ openvpn_key_city }}/O={{ openvpn_key_org }}/OU={{ openvpn_key_ou }}"
 openvpn_key_size: "2048"
 
-openvpn_gateway_network: "10.8.8.0 255.255.255.0"
-openvpn_gateway: "10.8.8.1"
+openvpn_gateway_network: "10.8.81.0 255.255.255.0"
+openvpn_gateway: "10.8.81.1"
 openvpn_internal_networks:
-  - "192.168.122.0 255.255.255.0"
-openvpn_log_verbosity: 7
+  - "{{ vm_network }}"
+openvpn_log_verbosity: 3
