@@ -10,7 +10,7 @@ dev tun
 server {{ openvpn_gateway_network }}
 topology subnet
 {% for item in openvpn_internal_networks %}
-push "route {{ item }}"
+push "route {{ item }} {{ openvpn_gateway }}"
 {% endfor %}
 push "dhcp-option DNS {{ dns_server }}"
 

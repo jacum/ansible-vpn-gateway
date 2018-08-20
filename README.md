@@ -4,6 +4,7 @@ Minimalistic hardened and convenient self-contained provisioning of a VPN gatewa
 On the physical host, execute the following line to enable port forwarding to the gateway VM
 ```
 firewall-cmd --zone=public --add-forward-port=port=1194:proto=udp:toport=1194:toaddr=<gateway VM IP>
+firewall-cmd --zone=public --add-masquerade
 ```
 (assuming default host and port) 
 

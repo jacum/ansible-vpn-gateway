@@ -33,7 +33,6 @@
     interface: tun0
     zone: trusted
     permanent: true
-    immediate: true
     state: enabled
   notify:
     - Restart firewalld

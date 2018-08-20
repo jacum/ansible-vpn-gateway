@@ -1,12 +1,4 @@
 ---
-- name: Enable services
-  service:
-    name: "{{item}}"
-    enabled: false
-  with_items:
-    - dnsmasq
-    - firewalld
-
 - name: Disable iptables
   service:
     name: iptables
@@ -15,6 +7,11 @@
   register: result
   failed_when: "result is failed and not 'Could not find the requested service'"
 
+- name: Relaxed SELinux
+  selinux:
+    policy: targeted
+    state: permissive
+
 - name: Copy service unit config file
   template:
     src: openvpn.service.j2
@@ -22,9 +19,16 @@
   notify:
     - Restart openvpn
 
-- name: Enable openvpn service
-  service:
-    name: openvpn
-    enabled: true
+- name: Enable services
+  systemd:
+    name: "{{item}}"
+    enabled: false
+    daemon_reload: yes
+  with_items:
+    - dnsmasq
+    - firewalld
+    - openvpn
   notify:
     - Restart openvpn
+    - Restart firewalld
+
