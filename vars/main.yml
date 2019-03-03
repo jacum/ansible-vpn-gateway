@@ -13,8 +13,8 @@ openvpn_key_days_valid: "365"
 openssl_key_request_subject: "/C={{ openvpn_key_country }}/ST={{ openvpn_key_province }}/L={{ openvpn_key_city }}/O={{ openvpn_key_org }}/OU={{ openvpn_key_ou }}"
 openvpn_key_size: "2048"
 
-openvpn_gateway_network: "10.8.81.0 255.255.255.0"
-openvpn_gateway: "10.8.81.1"
+openvpn_gateway_network: "10.8.{{physical_host_id}}.0 255.255.255.0"
+openvpn_gateway: "10.8.{{physical_host_id}}.1"
 openvpn_internal_networks:
   - "{{ vm_network }}"
 openvpn_log_verbosity: 3
